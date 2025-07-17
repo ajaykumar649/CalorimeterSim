@@ -25,12 +25,12 @@ cd CalorimeterSim
 
 2. Download or Transfer the Docker Image
 If you received the Docker image calorimeter-dev-v1.1.tar (e.g. from USB):
-
 # From your USB (assume it's mounted at /Volumes/CALO_USB)
 cp /Volumes/CALO_USB/calorimeter-dev-v1.1.tar .
-Or download it from Docker Hub (if available):
 
+Or download it from Docker Hub (if available):
 docker pull ajaykumar49/calorimeter-dev:v1.1
+
 3. Load Docker Image (if using tar file)
 docker load -i calorimeter-dev-v1.1.tar
 4. Run the Container
@@ -58,7 +58,9 @@ Output ROOT files (e.g., output.root) and histograms will be stored in build/.
 
 Example analysis (outside or inside container):
 
-root -l scripts/analyze.C
+root -l scripts/plot_profiles.C
+or
+python plot_profiles.py
 Or open the ROOT file interactively:
 
 root -l build/output.root
