@@ -1,0 +1,41 @@
+#ifndef ROOTIO_HH
+#define ROOTIO_HH
+
+#include "G4ThreeVector.hh"
+#include "globals.hh"
+
+#include "TFile.h"
+#include "TTree.h"
+#include "TH2D.h"   // ✅ Required for TH2D
+
+#include <vector>
+
+class RootIO {
+public:
+    static RootIO* Instance();
+
+    void SetFile(TFile* file);               // Call this from RunAction
+    void SaveHit(G4double edep, G4ThreeVector pos); // Called from SteppingAction
+    void FillEvent();                        // Call from EndOfEventAction
+    void ClearEvent();                       // Call from BeginOfEventAction
+    void Write();                            // Call at end of run
+
+private:
+    RootIO();                                // Private constructor (singleton pattern)
+    ~RootIO();                               // Destructor handles final write + cleanup
+
+    static RootIO* fInstance;                // Singleton instance
+
+    TFile* fFile;                            // ROOT output file
+    TTree* fTree;                            // Tree storing per-event vectors
+
+    std::vector<double> fEdepVec;            // Energy depositions [MeV]
+    std::vector<double> fXVec;               // X positions [mm]
+    std::vector<double> fYVec;               // Y positions [mm]
+    std::vector<double> fZVec;               // Z positions [mm]
+
+    TH2D* hXY;                               // 2D histogram of energy vs X-Y
+};
+
+#endif
+

@@ -1,0 +1,22 @@
+# Suppress verbose output
+/control/verbose 1
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+
+# Physics
+/run/initialize
+
+# Energy (GeV)
+/gun/energy 5 GeV
+/run/beamOn 10000
+
+/gun/energy 10 GeV
+/run/beamOn 10000
+
+/gun/energy 20 GeV
+/run/beamOn 10000
+
+/gun/energy 50 GeV
+/run/beamOn 10000
+

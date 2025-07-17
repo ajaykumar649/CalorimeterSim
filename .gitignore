@@ -1,0 +1,7 @@
+build/
+*.root
+*.tar
+*.log
+*.o
+*.so
+.DS_Store
