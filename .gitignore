@@ -1,8 +1,44 @@
-build/
-*.pdf
-*.root
-*.tar
+# LaTeX auxiliary files
+*.aux
+*.bbl
+*.blg
 *.log
+*.toc
+*.out
+*.synctex.gz
+*.pdf
+
+# Geant4 and ROOT files
+build/
+*.root
+*.heprep
 *.o
 *.so
+
+# Docker and tar files
+Dockerfile
+*.tar
+*.tar*
+
+# Python virtual environment and cache
+.venv/
+.venv/lib/python3.9/site-packages/ffmpeg-1.4.dist-info/
+.venv/lib/python3.9/site-packages/ffmpeg/
+__pycache__/
+*.pyc
+
+# macOS temporary files
 .DS_Store
+
+# Temporary directories
+temp/
+tmp/
+
+# Project-specific directories and files
+Geant_Root_Calorimetry/
+figures/
+plots/
+scripts/plots/
+
+# Visualization tools
+wired.jar
