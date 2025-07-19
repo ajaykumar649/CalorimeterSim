@@ -1,18 +1,9 @@
-# Open the HepRepFile visualization driver
+/control/verbose 2
+/run/verbose 2
 /vis/open HepRepFile
-
-# Draw the detector geometry
 /vis/drawVolume
-
-# Add particle trajectories to the scene
 /vis/scene/add/trajectories
-
-# Set viewing angle: theta=80, phi=180 degrees
 /vis/viewer/set/viewpointThetaPhi 80 180
-
-# Refresh the viewer to apply changes
 /vis/viewer/flush
-
-# Optional: keep trajectory information for review
 /tracking/storeTrajectory 1
-
+/run/beamOn 100

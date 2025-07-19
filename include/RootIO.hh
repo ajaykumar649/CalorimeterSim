@@ -1,42 +1,41 @@
-// RootIO.hh
-#ifndef ROOTIO_HH
-#define ROOTIO_HH
+#ifndef RootIO_h
+#define RootIO_h 1
 
-#include "globals.hh"
 #include "G4ThreeVector.hh"
-#include <vector>
-#include <map>
-
-class TFile;
-class TTree;
-class TH1D;
-class TH2D;
+#include "G4RootAnalysisManager.hh"
+#include <mutex>
 
 class RootIO {
 public:
-    static RootIO* Instance();
-    ~RootIO();
+  static RootIO* Instance();
+  void OpenFile(const G4String& fileName);
+  void SaveHit(G4double edep, G4ThreeVector pos);
+  void FillEvent();
+  void ClearEvent();
+  void Write();
 
-    void SetFile(TFile* file);
-    void SaveHit(G4double edep, G4ThreeVector pos);
-    void FillEvent();
-    void ClearEvent();
-    void Write();
+  G4int GetHRadialID() const { return hRadialID; }
+  G4int GetHLongID() const { return hLongID; }
+  G4int GetHTotalID() const { return hTotalID; }
+  G4int GetHXYID() const { return hXYID; }
 
 private:
-    RootIO();
-    static RootIO* fInstance;
+  RootIO();
+  ~RootIO();
+  static RootIO* fInstance;
+  static std::mutex fMutex;
 
-    TFile* fFile;
-    TTree* fTree;
-    std::vector<G4double> fEdepVec, fXVec, fYVec, fZVec;
+  G4RootAnalysisManager* fAnalysisManager;
+  G4int hRadialID;
+  G4int hLongID;
+  G4int hTotalID;
+  G4int hXYID;
+  std::map<int, G4int> hLayerXYIDs;
 
-    TH1D* hRadial;
-    TH1D* hLong;
-    TH1D* hTotal;
-    TH2D* hXY;
-    std::map<int, TH2D*> hLayerXY;
+  std::vector<double> fEdepVec;
+  std::vector<double> fXVec;
+  std::vector<double> fYVec;
+  std::vector<double> fZVec;
 };
 
 #endif
-

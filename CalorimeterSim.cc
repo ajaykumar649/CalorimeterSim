@@ -10,25 +10,25 @@
 #include "SteppingAction.hh"
 
 int main(int argc, char** argv) {
-    G4UIExecutive* ui = new G4UIExecutive(argc, argv);
-    G4RunManager* runManager = new G4RunManager();
-    runManager->SetUserInitialization(new DetectorConstruction());
-    runManager->SetUserInitialization(new FTFP_BERT);
-    runManager->SetUserAction(new PrimaryGeneratorAction());
-    runManager->SetUserAction(new RunAction());
-    runManager->SetUserAction(new EventAction());
-    runManager->SetUserAction(new SteppingAction());
-    runManager->Initialize();
+  G4UIExecutive* ui = new G4UIExecutive(argc, argv);
+  G4RunManager* runManager = new G4RunManager();
+  runManager->SetUserInitialization(new DetectorConstruction());
+  runManager->SetUserInitialization(new FTFP_BERT);
+  runManager->SetUserAction(new PrimaryGeneratorAction());
+  runManager->SetUserAction(new RunAction());
+  runManager->SetUserAction(new EventAction());
+  runManager->SetUserAction(new SteppingAction());
+  runManager->Initialize();
 
-    G4VisManager* vis = new G4VisExecutive();
-    vis->Initialize();
+  G4VisManager* vis = new G4VisExecutive();
+  vis->Initialize();
 
-    G4UImanager::GetUIpointer()->ApplyCommand("/control/execute macros/vis.mac");
-    ui->SessionStart();
+  G4String macroFile = (argc > 1) ? argv[1] : "../macros/vis.mac";
+  G4UImanager::GetUIpointer()->ApplyCommand("/control/execute " + macroFile);
+  ui->SessionStart();
 
-    delete vis;
-    delete runManager;
-    delete ui;
-    return 0;
+  delete vis;
+  delete runManager;
+  delete ui;
+  return 0;
 }
-
