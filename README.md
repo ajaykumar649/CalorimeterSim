@@ -1,83 +1,73 @@
-# CalorimeterSim 🚀  
-GEANT4 Sampling Calorimeter Simulation with ROOT Output
+CalorimeterSim
+A Geant4-based simulation of electromagnetic showers in a sampling calorimeter, designed for high-energy physics studies. The project simulates a 10 GeV electron interacting with a 10-layer lead-scintillator calorimeter, with energy deposition analyzed using ROOT and Python.
+Prerequisites
 
-This repository contains the simulation code for a high-energy sampling calorimeter using [GEANT4](https://geant4.web.cern.ch/) and [ROOT](https://root.cern/). The simulation can be run inside a pre-built Docker container to simplify dependencies.
+Docker: For reproducible environment (ajaykumar49/calorimeter-dev:v1.3).
+Geant4: Version compatible with the Docker image.
+ROOT: For data analysis.
+Python 3: With uproot, numpy, matplotlib (see requirements.txt).
+CMake: For building the simulation.
 
----
+Setup
 
-## 🧰 Features
-
-- GEANT4-based calorimeter simulation.
-- ROOT-based output (`.root` files with histograms & ntuples).
-- Docker-based reproducible environment.
-- Example analysis scripts and plots.
-
----
-
-## 🔧 Getting Started
-
-### 1. Clone this Repository
-
-```bash
+Clone the Repository:
 git clone https://github.com/ajaykumar649/CalorimeterSim.git
 cd CalorimeterSim
 
 
-2. Download or Transfer the Docker Image
-If you received the Docker image calorimeter-dev-v1.1.tar (e.g. from USB):
-# From your USB (assume it's mounted at /Volumes/CALO_USB)
-cp /Volumes/CALO_USB/calorimeter-dev-v1.1.tar .
+Docker Setup:
 
-Or download it from Docker Hub (if available):
-docker pull ajaykumar49/calorimeter-dev:v1.1
+Pull the Docker image:docker pull ajaykumar49/calorimeter-dev:v1.3
 
-3. Load Docker Image (if using tar file)
-docker load -i calorimeter-dev-v1.1.tar
-4. Run the Container
-Mount this folder (CalorimeterSim) into the container as /workspace:
 
-docker run --rm -it \
-  -v $(pwd):/workspace \
-  ajaykumar49/calorimeter-dev:v1.1 \
-  bash
-This will start a bash shell inside the container with your code mounted at /workspace.
+Or load locally:docker load -i ~/calorimeter-dev_v1.3.tar
 
-🧪 Inside the Container
 
-Once inside:
 
-cd /workspace
+
+Launch Container:
+docker run -it --env DISPLAY=$DISPLAY --volume $PWD:/home/ajay/CalorimeterSim \
+  --workdir /home/ajay/CalorimeterSim ajaykumar49/calorimeter-dev:v1.3
+
+
+Build Simulation:
+source /opt/geant4/bin/geant4.sh
 mkdir -p build
 cd build
 cmake ..
 make -j$(nproc)
-./CalorimeterSim
-Output ROOT files (e.g., output.root) and histograms will be stored in build/.
-
-📊 ROOT Analysis
-
-Example analysis (outside or inside container):
-
-root -l scripts/plot_profiles.C
-or
-python plot_profiles.py
-Or open the ROOT file interactively:
-
-root -l build/output.root
-
-
-CalorimeterSim/
-├── CMakeLists.txt
-├── src/                  # GEANT4 source code
-├── include/              # Headers
-├── macros/               # Optional macros
-├── scripts/              # ROOT analysis scripts
-├── Dockerfile            # Used to build the container
-├── calorimeter-dev-v1.1.tar (optional) # Prebuilt container image
-├── README.md
 
 
 
-License
+Usage
 
-This project is licensed under the MIT License.
+Run Simulation:
+./CalorimeterSim ../macros/vis.mac
+
+
+Outputs output.root with energy deposition data.
+
+
+Analyze Data:
+
+Use scripts/plot_profiles.py to generate visualizations:python3 scripts/plot_profiles.py
+
+
+Install dependencies:pip install -r requirements.txt
+
+
+
+
+
+Key Files
+
+CalorimeterSim.cc: Main simulation executable.
+include/, src/: Geant4 classes for detector construction, actions, and ROOT I/O.
+macros/vis.mac: Visualization macro for Geant4.
+scripts/plot_profiles.py: Python script for analyzing output.root and plotting energy profiles.
+
+Notes
+
+Prepared on July 19, 2025, by Dr. Ajay Kumar (ajaykumar49@bhu.ac.in).
+Visualization outputs (e.g., PNGs) are excluded via .gitignore to reduce repository size.
+For issues, contact the repository owner or open an issue on GitHub.
