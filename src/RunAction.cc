@@ -1,18 +1,27 @@
 #include "RunAction.hh"
-#include "RootIO.hh"
 #include "G4Run.hh"
-#include "G4ios.hh"
+#include "G4RunManager.hh"
+#include "RootIO.hh"
+#include "DetectorConstruction.hh"
 
-RunAction::RunAction() : G4UserRunAction() {}
-
+RunAction::RunAction() {}
 RunAction::~RunAction() {}
 
 void RunAction::BeginOfRunAction(const G4Run*) {
-  G4cout << "### Run started" << G4endl;
-  RootIO::Instance()->OpenFile("output.root");
+    G4RunManager::GetRunManager()->SetRandomNumberStore(false);
+
+    // Retrieve number of layers dynamically
+    auto* det = const_cast<DetectorConstruction*>(
+        static_cast<const DetectorConstruction*>(G4RunManager::GetRunManager()->GetUserDetectorConstruction()));
+
+    RootIO::Instance()->SetNumLayers(det->GetNumLayers());
+    RootIO::Instance()->OpenFile("output.root");
 }
 
-void RunAction::EndOfRunAction(const G4Run*) {
-  G4cout << "### Run ended, writing to ROOT file: output.root" << G4endl;
-  RootIO::Instance()->Write();
+void RunAction::EndOfRunAction(const G4Run* run) {
+    RootIO::Instance()->Write();
+
+    G4cout << "### Run ended. Events processed: " << run->GetNumberOfEvent() << G4endl;
+    G4cout << "### ROOT file 'output.root' written." << G4endl;
 }
+

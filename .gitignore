@@ -39,6 +39,6 @@ Geant_Root_Calorimetry/
 figures/
 plots/
 scripts/plots/
-
+.venv/
 # Visualization tools
 wired.jar

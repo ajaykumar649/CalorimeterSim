@@ -49,6 +49,11 @@ Outputs output.root with energy deposition data.
 📊 Analyze Data
 
 Generate Plots
-python3 scripts/plot_profiles.py
+cd  scripts
+python3 "name of python script"
 Install Python Dependencies
+
+python -m venv myenv
+source myenv/bin/activate
 pip install -r requirements.txt
+
