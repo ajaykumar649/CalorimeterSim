@@ -12,6 +12,10 @@
 #include "G4coutDestination.hh"
 #include "RootIO.hh"  // [MODIFIED]
 
+#include "G4Gamma.hh"
+#include "G4ProcessManager.hh"
+#include "G4ProcessVector.hh"  // <-- [PATCH ADDED]
+
 DetectorConstruction::DetectorConstruction()
     : fScoringVolume(nullptr),
       fNumLayers(20),
@@ -25,6 +29,22 @@ DetectorConstruction::DetectorConstruction()
 
 DetectorConstruction::~DetectorConstruction() {
     delete fMessenger;
+}
+
+// [PATCH ADDED] Local helper to remove photonNuclear process
+static void RemovePhotonNuclear() {
+    auto gamma = G4Gamma::Gamma();
+    G4ProcessManager* pman = gamma->GetProcessManager();
+    G4ProcessVector* pvect = pman->GetProcessList();
+
+    for (G4int i = 0; i < pvect->size(); ++i) {
+        G4VProcess* proc = (*pvect)[i];
+        if (proc->GetProcessName() == "photonNuclear") {
+            pman->RemoveProcess(proc);
+            G4cout << "✅ Removed photonNuclear from gamma" << G4endl;
+            break;
+        }
+    }
 }
 
 G4VPhysicalVolume* DetectorConstruction::Construct() {
@@ -65,15 +85,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
 
         new G4PVPlacement(nullptr, G4ThreeVector(0, 0, scintZ),
                           logicActive, "Active" + std::to_string(i), logicWorld, false, i, true);
-        //G4cout << "Layer " << i << ": Scintillator at z = " << scintZ / mm << " mm" << G4endl;
 
         new G4PVPlacement(nullptr, G4ThreeVector(0, 0, absZ),
                           logicAbsorber, "Absorber" + std::to_string(i), logicWorld, false, i, true);
-        //G4cout << "Layer " << i << ": Absorber at z = " << absZ / mm << " mm" << G4endl;
     }
 
     // [MODIFIED] Let RootIO know how many layers were built
     RootIO::Instance()->SetNumLayers(fNumLayers);
+
+    // [PATCH] Suppress fatal crash from photonNuclear
+    //RemovePhotonNuclear();
 
     return physWorld;
 }
