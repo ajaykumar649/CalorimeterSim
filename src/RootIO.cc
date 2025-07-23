@@ -19,6 +19,18 @@ RootIO::~RootIO() {
 
 void RootIO::SetNumLayers(G4int n) {
     fLayerEdep.resize(n, 0.);
+    hLayerIDs.clear();
+    if (fAnalysisManager) {
+        for (size_t i = 0; i < (size_t)n; ++i) {
+            G4String name = "hLayer" + std::to_string(i);
+            G4String title = "Energy deposition in Layer " + std::to_string(i);
+            hLayerIDs.push_back(fAnalysisManager->CreateH1(name, title, 100, 0., 100.)); // Adjusted for 10 GeV
+        }
+    }
+}
+
+G4int RootIO::GetNumLayers() const {  // [MODIFIED]
+    return fLayerEdep.size();
 }
 
 void RootIO::AddToLayer(G4int layer, G4double edep) {
@@ -64,15 +76,15 @@ void RootIO::OpenFile(const G4String& filename) {
     fAnalysisManager->SetVerboseLevel(1);
     fAnalysisManager->OpenFile(filename);
 
-    hTotalID  = fAnalysisManager->CreateH1("hTotal",  "Total Energy Deposition (MeV)", 101, 0., 101.);
+    hTotalID  = fAnalysisManager->CreateH1("hTotal",  "Total Energy Deposition (MeV)", 101, 0., 10000.); // Adjusted for 10 GeV
     hRadialID = fAnalysisManager->CreateH1("hRadial", "Radial Profile (mm)",           100, 0., 50.);
-    hLongID   = fAnalysisManager->CreateH1("hLong",   "Longitudinal Profile (mm)",      100, -100., 100.);
+    hLongID   = fAnalysisManager->CreateH1("hLong",   "Longitudinal Profile (mm)",      100, -150., 150.); // Adjusted for calorimeter depth
     hXYID     = fAnalysisManager->CreateH2("hXY",     "XY Shower Profile (mm)",         100, -50., 50., 100, -50., 50.);
 
     for (size_t i = 0; i < fLayerEdep.size(); ++i) {
         G4String name = "hLayer" + std::to_string(i);
         G4String title = "Energy deposition in Layer " + std::to_string(i);
-        hLayerIDs.push_back(fAnalysisManager->CreateH1(name, title, 100, 0., 10.));
+        hLayerIDs.push_back(fAnalysisManager->CreateH1(name, title, 100, 0., 100.)); // Adjusted for 10 GeV
     }
 
     fAnalysisManager->CreateNtuple("hits", "Energy and Position");

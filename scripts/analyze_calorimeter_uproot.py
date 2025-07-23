@@ -7,7 +7,7 @@ import os
 os.makedirs("plots", exist_ok=True)
 
 # Open ROOT file
-file = uproot.open("output.root")
+file = uproot.open("../build/output.root")
 
 # --- Total Energy ---
 hTotal = file["hTotal"]
@@ -46,7 +46,7 @@ x_edges = hXY.axis(0).edges()
 y_edges = hXY.axis(1).edges()
 z_vals = hXY.values()
 
-plt.figure(figsize=(6,5))
+plt.figure(figsize=(6, 5))
 plt.pcolormesh(x_edges, y_edges, z_vals.T, shading='auto', cmap="viridis")
 plt.colorbar(label="Counts")
 plt.title("XY Shower Profile")
@@ -66,12 +66,15 @@ for i in range(100):  # Try up to 100 layers
     if name not in file:
         break
     hist = file[name]
-    x = hist.axis().edges()
-    y = hist.values()
+    x_edges = hist.axis().edges()
+    y_vals = hist.values()
 
-    mean = np.average((x[:-1] + x[1:]) / 2, weights=y) if np.sum(y) > 0 else 0
-    variance = np.average(((x[:-1] + x[1:]) / 2 - mean)**2, weights=y) if np.sum(y) > 0 else 0
-    std = np.sqrt(variance)
+    if np.sum(y_vals) == 0:
+        mean, std = 0, 0
+    else:
+        bin_centers = 0.5 * (x_edges[1:] + x_edges[:-1])
+        mean = np.average(bin_centers, weights=y_vals)
+        std = np.sqrt(np.average((bin_centers - mean) ** 2, weights=y_vals))
 
     layer_means.append(mean)
     layer_stddevs.append(std)
@@ -94,8 +97,8 @@ plt.tight_layout()
 plt.savefig("plots/hLayers_overlay.png")
 
 # --- Summary Stats ---
-shower_max_layer = np.argmax(layer_means)
-tail_leakage = sum(layer_means[shower_max_layer + 1:])
+shower_max_layer = int(np.argmax(layer_means))
+tail_leakage = float(sum(layer_means[shower_max_layer + 1:]))
 
 print("\n📊 Calorimeter Layer Summary:")
 print(f" - Total Layers: {len(layer_means)}")

@@ -6,9 +6,8 @@
 PrimaryGeneratorAction::PrimaryGeneratorAction() {
     fGun = new G4ParticleGun(1);
     fGun->SetParticleDefinition(G4Electron::Definition());
-    // Set default values, overridden by macro /gun commands
     fGun->SetParticlePosition(G4ThreeVector(0, 0, -50 * cm));
-    fGun->SetParticleEnergy(10 * MeV); // Default, overridden by /gun/energy
+    fGun->SetParticleEnergy(10 * GeV); // Updated to 10 GeV
     fGun->SetParticleMomentumDirection(G4ThreeVector(0, 0, 1));
 }
 

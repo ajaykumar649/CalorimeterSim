@@ -1,3 +1,6 @@
+#ifndef PrimaryGeneratorAction_h
+#define PrimaryGeneratorAction_h 1
+
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4ParticleGun.hh"
 
@@ -8,7 +11,6 @@ public:
     virtual void GeneratePrimaries(G4Event* event) override;
 private:
     G4ParticleGun* fGun;
-    G4double energy = 10.0; // default energy in GeV
-
 };
 
+#endif

@@ -1,0 +1,30 @@
+# run_datacollection.mac — for batch data production with minimal output
+
+# --- Geometry Configuration ---
+/calor/setLayers 20
+/calor/setAbsThickness 8 mm
+/calor/setScintThickness 4 mm
+/calor/setAbsMaterial G4_Pb
+
+# --- Simulation Cut Settings ---
+/run/setCut 0.1 mm
+
+# --- Particle Gun ---
+/gun/particle e-
+/gun/energy 10 GeV
+/gun/position 0 0 -50 cm
+/gun/direction 0 0 1
+
+# --- Random Seed for Reproducibility ---
+/random/setSeeds 12345 67890
+
+# --- Verbosity Settings (Minimal Output) ---
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+
+# --- Initialize & Run ---
+/run/initialize
+/run/beamOn 10000
+

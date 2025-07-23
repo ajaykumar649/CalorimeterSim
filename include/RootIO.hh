@@ -25,8 +25,11 @@ public:
     void SetNumLayers(G4int n);
     void AddToLayer(G4int layer, G4double edep);
 
+    // [MODIFIED] Added for bounds-safe access in SteppingAction
+    G4int GetNumLayers() const;
+
     G4int GetHTotalID() const { return hTotalID; }
-    G4int GetHLongID() const { return hLongID; }
+    G4int GetHLongID()  const { return hLongID;  }
     G4int GetHRadialID() const { return hRadialID; }
 
 private:

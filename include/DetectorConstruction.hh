@@ -1,27 +1,36 @@
-#ifndef DETECTOR_CONSTRUCTION_HH
-#define DETECTOR_CONSTRUCTION_HH
+#ifndef DetectorConstruction_h
+#define DetectorConstruction_h 1
 
 #include "G4VUserDetectorConstruction.hh"
 #include "globals.hh"
-#include "G4String.hh"
 
 class G4VPhysicalVolume;
+class G4LogicalVolume;
+class CalorimeterMessenger;
 
-class DetectorConstruction : public G4VUserDetectorConstruction {
+class DetectorConstruction : public G4VUserDetectorConstruction
+{
 public:
     DetectorConstruction();
     virtual ~DetectorConstruction();
+
     virtual G4VPhysicalVolume* Construct();
 
-    void SetMaterialName(const G4String& mat) { fMaterialName = mat; }
-    void SetNumLayers(G4int n) { fNumLayers = n; }
+    G4LogicalVolume* GetScoringVolume() const;
+    G4int GetNumLayers() const;
 
-    G4int GetNumLayers() const { return fNumLayers; }
+    void SetNumLayers(G4int num);
+    void SetAbsThickness(G4double thick);
+    void SetScintThickness(G4double thick);
+    void SetAbsMaterial(const G4String& material);
 
 private:
-    G4String fMaterialName;
+    G4LogicalVolume* fScoringVolume;
     G4int fNumLayers;
+    G4double fAbsThickness;
+    G4double fScintThickness;
+    G4String fAbsMaterial;
+    CalorimeterMessenger* fMessenger;
 };
 
 #endif
-
