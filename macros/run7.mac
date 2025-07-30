@@ -1,0 +1,34 @@
+# Macro for Geant4 simulation of electron events
+# Define configurable parameters
+/control/alias PARTICLE e-
+/control/alias ENERGY 10 GeV
+/control/alias Z_POSITION -100 cm
+/control/alias NUM_EVENTS 10
+/control/alias OUTPUT_FILE output_run3.root
+
+# Verbosity settings for minimal output
+/control/verbose 1
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+
+# Set random seed for reproducibility
+/random/setSeeds 12345 67890
+
+# Initialize simulation
+/run/initialize
+
+# Configure output for analysis (if analysis manager exists)
+/analysis/setFileName {OUTPUT_FILE}
+/analysis/h1/set 1 100 0 20 GeV  # Example histogram for energy
+
+# Configure particle gun
+/gun/particle {PARTICLE}
+/gun/energy {ENERGY}
+/gun/position/gaussian 0 0 {Z_POSITION} 1 cm 1 cm 0 cm  # Gaussian beam spot
+/gun/direction 0 0 1
+
+# Log simulation details
+/control/echo "Starting simulation: {PARTICLE}, {ENERGY}, {NUM_EVENTS} events"
+
+/run/beamOn {NUM_EVENTS}

@@ -1,0 +1,35 @@
+# Macro for Geant4 calorimetry simulation with electron beam
+  /control/alias PARTICLE e-
+  /control/alias ENERGY 10 MeV  # Test with MeV to match histogram
+  /control/alias Z_POSITION -120 mm  # Adjusted to be just before -109.25 mm
+  /control/alias NUM_EVENTS 10  # Test with 10 events
+  /control/alias OUTPUT_FILE output.root
+
+  # Verbosity settings for debugging
+  /control/verbose 2
+  /run/verbose 2
+  /event/verbose 0
+  /tracking/verbose 1
+
+  # Set random seed for reproducibility
+  /random/setSeeds 12345 67890
+
+  # Use default physics list (FTFP_BERT)
+  /run/setCut 0.1 mm
+  # Only include if CalorimeterRegion is defined
+  # /run/setCutForRegion CalorimeterRegion 0.01 mm
+  # /process/em/applyStepLimiter true
+  # /process/em/setMaxStepLength CalorimeterRegion 0.1 mm
+
+  # Initialize simulation
+  /run/initialize
+
+  # Configure particle gun
+  /gun/particle {PARTICLE}
+  /gun/energy {ENERGY}
+  /gun/position 0 0 {Z_POSITION}
+  /gun/direction 0 0 1
+
+  # Log simulation details
+  /control/echo "Starting calorimetry simulation: {PARTICLE}, {ENERGY}, {NUM_EVENTS} events"
+  /run/beamOn {NUM_EVENTS}

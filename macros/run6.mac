@@ -1,0 +1,18 @@
+# Macro for running a single electron event simulation with Geant4
+# Verbosity settings: minimal for speed, increase for debugging
+/control/verbose 1        # General control verbosity
+/run/verbose 1            # Run-level verbosity
+/event/verbose 0          # Event-level verbosity
+/tracking/verbose 0       # Particle tracking verbosity (set to 1 for debugging)
+
+# Initialize the simulation kernel
+/run/initialize           # Sets up geometry, physics, and other components
+
+# Configure particle gun for electron beam
+/gun/particle e-          # Particle type: electron
+/gun/energy 10 GeV        # Kinetic energy of the electron
+/gun/position 0 0 -100 cm # Starting position (x, y, z) before detector
+/gun/direction 0 0 1      # Direction of particle (along +z axis)
+
+# Run simulation for a single event (useful for quick tests)
+/run/beamOn 1

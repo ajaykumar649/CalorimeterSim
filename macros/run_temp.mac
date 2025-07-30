@@ -1,0 +1,28 @@
+# --- Geometry Configuration ---
+/calor/setLayers 20
+/calor/setAbsThickness 6 mm
+/calor/setScintThickness 3 mm
+/calor/setAbsMaterial G4_Fe
+
+# --- Simulation Cut Settings ---
+/run/setCut 0.1 mm
+
+# --- Particle Gun ---
+/gun/particle pi-
+/gun/energy 5 GeV
+/gun/position 0 0 -50 cm
+/gun/direction 0 0 1
+
+# --- Random Seed for Reproducibility ---
+/random/setSeeds 12345 67890
+
+# --- Verbosity Settings (Minimal Output) ---
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+
+# --- Initialize & Run ---
+/run/initialize
+/run/beamOn 10
+

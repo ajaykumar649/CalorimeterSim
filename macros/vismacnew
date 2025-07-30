@@ -1,0 +1,18 @@
+/control/verbose 2
+/run/verbose 2
+
+/vis/open HepRepFile
+/vis/scene/create                    # ✅ add this
+/vis/scene/add/volume               # ✅ needed to draw detector geometry
+/vis/scene/add/trajectories         # ✅ adds particle tracks
+/vis/sceneHandler/attach            # ✅ attach scene to viewer
+
+/vis/viewer/set/viewpointThetaPhi 80 180
+/vis/viewer/set/style wireframe
+/vis/viewer/flush
+
+/tracking/storeTrajectory 1
+
+/run/initialize                     # ✅ make sure geometry is initialized
+/run/beamOn 100
+

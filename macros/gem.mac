@@ -1,0 +1,4 @@
+# Macro to dump geometry
+  /run/initialize
+  /geometry/test/recursivePrint 0
+  /run/exit

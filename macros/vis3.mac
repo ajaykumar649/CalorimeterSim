@@ -1,0 +1,20 @@
+/vis/open HepRepFile
+/run/initialize
+
+# DRAW the detector geometry
+/vis/drawVolume
+
+# Attach and refresh
+/vis/viewer/set/autoRefresh true
+/vis/sceneHandler/attach
+
+# DRAW trajectories
+/vis/scene/add/trajectories smooth
+/vis/scene/add/hits
+
+# Optional: change viewpoint and zoom
+/vis/viewer/set/viewpointThetaPhi 70 30
+/vis/viewer/zoom 1.4
+
+/run/beamOn 5
+

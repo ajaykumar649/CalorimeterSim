@@ -1,0 +1,28 @@
+# Set verbosity
+/control/verbose 1
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+
+# Optional: enable visualization (only if vis.mac exists)
+#/control/execute vis.mac
+
+# Initialize detector and physics
+/run/initialize
+
+# Setup particle gun
+/gun/particle e-
+/gun/energy 10 GeV
+/gun/position 0 0 -100 cm
+/gun/direction 0 0 1
+
+# Optional: enable analysis output (assumes it's implemented in your C++)
+#/analysis/setFileName output_test
+#/analysis/open
+
+# Run minimal events for test
+/run/beamOn 1
+
+# Optional: close ROOT output (if using analysis manager)
+/analysis/close
+

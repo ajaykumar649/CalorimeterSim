@@ -7,9 +7,12 @@
 *.out
 *.synctex.gz
 *.pdf
+*.doc
+*.docx
 *.pyc
 __pycache__/
 .venv/
+
 # Geant4 and ROOT files
 build/
 *.root

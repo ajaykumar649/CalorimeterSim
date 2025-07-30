@@ -1,0 +1,27 @@
+# Visualization setup
+/vis/open OGL  # Open OpenGL viewer (use TSG if you're in offscreen mode)
+/vis/viewer/set/viewpointThetaPhi 90 0
+/vis/viewer/set/autoRefresh true
+/vis/viewer/set/style wireframe  # Show geometry in wireframe mode
+/vis/drawVolume  # Draw full detector geometry
+
+# Optional: set color of background
+/vis/viewer/set/background white
+
+# Store and draw particle trajectories
+/vis/scene/add/trajectories smooth
+/vis/modeling/trajectories/create/drawByCharge
+/vis/modeling/trajectories/drawByCharge-0/default default
+/vis/modeling/trajectories/drawByCharge-0/set e- blue
+/vis/modeling/trajectories/drawByCharge-0/set e+ red
+
+# Store hits
+/vis/scene/add/hits
+/vis/scene/endOfEventAction accumulate
+
+# Optional: add axes at origin
+/vis/scene/add/axes 0 0 0 10 cm
+
+# Refresh after each event (needed for GUI)
+/vis/scene/notifyHandlers
+
