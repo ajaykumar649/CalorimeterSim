@@ -7,7 +7,8 @@
 *.out
 *.synctex.gz
 *.pdf
-
+*.pyc
+__pycache__/
 # Geant4 and ROOT files
 build/
 *.root
