@@ -1,0 +1,29 @@
+/control/verbose 2
+/run/verbose 2
+
+# Open HepRepFile viewer (creates .heprep output for viewing in WIRED)
+/vis/open HepRepFile
+
+# Draw detector geometry
+/vis/drawVolume
+
+# Store and draw particle trajectories
+/tracking/storeTrajectory 1
+/vis/scene/add/trajectories smooth
+/vis/modeling/trajectories/create/drawByCharge
+/vis/modeling/trajectories/drawByCharge-0/set e- blue
+/vis/modeling/trajectories/drawByCharge-0/set defaultColor yellow
+
+# Add hits (if sensitive detectors and hits are defined)
+/vis/scene/add/hits
+
+# Set camera angle
+/vis/viewer/set/viewpointThetaPhi 80 180
+
+# Auto refresh on event end
+/vis/viewer/set/autoRefresh true
+/vis/scene/endOfEventAction accumulate
+
+# Finalize setup
+/vis/viewer/flush
+

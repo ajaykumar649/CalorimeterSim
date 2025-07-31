@@ -1,0 +1,16 @@
+# Suppress verbose output
+/control/verbose 1
+/run/verbose 1
+/event/verbose 1
+/tracking/verbose 1
+
+# Physics
+# Initialize detector
+
+/run/initialize
+
+# Energy (GeV)
+/gun/particle e-
+/gun/energy 10 GeV
+/run/beamOn 1
+

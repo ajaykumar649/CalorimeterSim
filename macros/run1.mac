@@ -1,0 +1,25 @@
+# Macro for quick test of Geant4 simulation
+
+# Optional: initialize visualization
+# /control/execute vis.mac   ; if using visual interface
+
+# Set verbose output for 1st event only
+/tracking/verbose 1
+/run/verbose 1
+/event/verbose 0
+/step/verbose 0
+
+# Initialize detector
+/run/initialize
+
+# Set particle type and energy
+/gun/particle e-
+/gun/energy 10 GeV
+
+# Set gun position and direction
+/gun/position 0 0 -100 cm
+/gun/direction 0 0 1
+
+# Run small number of events (for fast testing)
+/run/beamOn 10
+

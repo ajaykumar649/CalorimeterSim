@@ -10,7 +10,7 @@ def gamma_profile(z, a, b, scale):
     return scale * (b*z)**(a-1) * np.exp(-b*z) * b / gamma(a)
 
 # --- Load ROOT file ---
-file = uproot.open("output.root")  # or path to your file
+file = uproot.open("../build/output.root")  # or path to your file
 layer_histos = {k: v for k, v in file.items() if re.match(r"hLayer\d+", k)}
 
 # --- Sort histograms by layer index ---

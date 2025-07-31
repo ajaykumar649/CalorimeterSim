@@ -1,0 +1,10 @@
+/calor/setLayers 20
+/calor/setAbsThickness 8 mm
+/calor/setScintThickness 4 mm
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0
+/random/setSeeds 12345 67890
+/run/setCut 0.1 mm
+/run/initialize
+/run/beamOn 1000  # Adjust number of events as needed

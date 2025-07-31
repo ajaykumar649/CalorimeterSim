@@ -47,7 +47,8 @@ for name, hist in layer_histos.items():
     # --- Print debug info ---
     print(f"Layer {idx:2d} → Mean = {mean:.2f} MeV, StdDev = {std:.2f} MeV, Total Counts = {int(total)}")
 
-    # --- Save plot ---
+    # --- Save plot with cleaned name ---
+    clean_name = name.split(";")[0]  # Remove ROOT histogram version suffix
     plt.figure()
     plt.bar(bin_centers, counts, width=np.diff(bin_edges), color="skyblue", edgecolor="k")
     plt.title(f"Layer {idx}: Mean = {mean:.2f} MeV, StdDev = {std:.2f} MeV")
@@ -55,7 +56,7 @@ for name, hist in layer_histos.items():
     plt.ylabel("Counts")
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.savefig(f"plots/{name}.png")
+    plt.savefig(f"plots/{clean_name}.png")
     plt.close()
 
 # --- Summary plot ---

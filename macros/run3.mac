@@ -1,0 +1,18 @@
+# Set verbosity: minimal for speed, raise to debug
+/control/verbose 1
+/run/verbose 1
+/event/verbose 0
+/tracking/verbose 0  # Set to 1 only when debugging particle paths
+
+# Initialize everything
+/run/initialize
+
+# Configure particle gun
+/gun/particle e-
+/gun/energy 10 GeV
+/gun/position 0 0 -100 cm   # Optional: Ensure particle starts before detector
+/gun/direction 0 0 1        # Optional: Shoot along +z
+
+# Run just 1 event for fast testing
+/run/beamOn 1
+

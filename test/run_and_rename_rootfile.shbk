@@ -1,0 +1,78 @@
+#!/bin/bash
+
+if [[ "$1" == "--help" ]]; then
+  echo "Usage: $0 [particle] [energy-GeV] [nEvents] [AbsThick-mm] [ScintThick-mm] [AbsMaterial]"
+  echo "If no arguments are provided, defaults are extracted from: ../macros/run_datacollection_template.mac"
+  exit 0
+fi
+
+TEMPLATE="../macros/run_datacollection_template.mac"
+MACRO="../macros/run_temp.mac"
+BINARY="../build/CalorimeterSim"
+OUTPUTDIR="../Output"
+
+get_default_from_template() {
+  local pattern="$1"
+  grep "$pattern" "$TEMPLATE" | awk '{print $2}'
+}
+
+DEFAULT_PARTICLE=$(get_default_from_template "/gun/particle")
+DEFAULT_ENERGY=$(get_default_from_template "/gun/energy")
+DEFAULT_EVENTS=$(get_default_from_template "/run/beamOn")
+DEFAULT_ABSTHICK=$(get_default_from_template "/calor/setAbsThickness")
+DEFAULT_SCINTTHICK=$(get_default_from_template "/calor/setScintThickness")
+DEFAULT_ABSMAT=$(get_default_from_template "/calor/setAbsMaterial")
+
+PARTICLE="${1:-$DEFAULT_PARTICLE}"
+ENERGY="${2:-$DEFAULT_ENERGY}"
+NEVENTS="${3:-$DEFAULT_EVENTS}"
+ABSTHICK="${4:-$DEFAULT_ABSTHICK}"
+SCINTTHICK="${5:-$DEFAULT_SCINTTHICK}"
+ABSMAT="${6:-$DEFAULT_ABSMAT}"
+
+if [ ! -f "$TEMPLATE" ]; then
+  echo "❌ Missing macro template: $TEMPLATE"
+  exit 1
+fi
+if [ ! -x "$BINARY" ]; then
+  echo "❌ Binary not executable or missing: $BINARY"
+  exit 1
+fi
+
+echo "ℹ️ Using configuration:"
+echo "   Particle     = $PARTICLE"
+echo "   Energy       = $ENERGY GeV"
+echo "   Events       = $NEVENTS"
+echo "   Absorber     = $ABSTHICK mm ($ABSMAT)"
+echo "   Scintillator = $SCINTTHICK mm"
+
+cp "$TEMPLATE" "$MACRO"
+
+
+sed -i -e "s|^/gun/particle .*|/gun/particle $PARTICLE|" "$MACRO"
+sed -i -e "s|^/gun/energy .*|/gun/energy ${ENERGY} GeV|" "$MACRO"
+sed -i -e "s|^/run/beamOn .*|/run/beamOn $NEVENTS|" "$MACRO"
+sed -i -e "s|^/calor/setAbsThickness .*|/calor/setAbsThickness ${ABSTHICK} mm|" "$MACRO"
+sed -i -e "s|^/calor/setScintThickness .*|/calor/setScintThickness ${SCINTTHICK} mm|" "$MACRO"
+sed -i -e "s|^/calor/setAbsMaterial .*|/calor/setAbsMaterial ${ABSMAT}|" "$MACRO"
+
+"$BINARY" "$MACRO"
+if [ $? -ne 0 ]; then
+  echo "❌ Simulation failed."
+  exit 1
+fi
+
+mkdir -p "$OUTPUTDIR"
+RAW="../build/output.root"
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+TAG="${PARTICLE}_${ENERGY}GeV_${NEVENTS}evt_${ABSTHICK}mm_${SCINTTHICK}mm_${ABSMAT}_${TIMESTAMP}.root"
+OUT="$OUTPUTDIR/$TAG"
+
+if [ -f "$RAW" ]; then
+  mv "$RAW" "$OUT"
+  echo "✅ Output stored at: $OUT"
+else
+  echo "❌ ROOT file not found after run."
+  exit 1
+fi
+

@@ -5,7 +5,7 @@ import os
 import re
 
 # Open ROOT file
-file = uproot.open("output.root")
+file = uproot.open("../build/output.root")
 
 # Get all layer histograms
 layer_histos = {k: file[k] for k in file.keys() if re.match(r"hLayer\d+", k)}

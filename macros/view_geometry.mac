@@ -1,0 +1,7 @@
+# Macro to visualize geometry with DAWNFILE
+  /run/initialize
+  /vis/open DAWNFILE
+  /vis/drawVolume
+  /vis/viewer/set/viewpointThetaPhi 90 180
+  /vis/viewer/zoom 1.5
+  /vis/viewer/update
